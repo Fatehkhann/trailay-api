@@ -1,0 +1,29 @@
+{
+  "name": "trailay-api",
+  "version": "1.0.0",
+  "description": "RESTful API of Trailay",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fatehkhann/trailay-api.git"
+  },
+  "keywords": [
+    "API",
+    "Trailay"
+  ],
+  "author": "Fateh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Fatehkhann/trailay-api/issues"
+  },
+  "homepage": "https://github.com/Fatehkhann/trailay-api#readme",
+  "dependencies": {
+    "express": "^4.15.2",
+    "mongodb": "^2.2.26",
+    "mongoose": "^4.9.5"
+  }
+}
