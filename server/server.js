@@ -27,6 +27,10 @@ app.post('/addLog', (req, res) => {
     route.getResponse('post', '/addLog', {req, res});
 });
 
+app.get('/', (req, res) => {
+    route.getResponse('get', '/', {req, res});
+});
+
 app.get('/drivers', (req, res) => {
     route.getResponse('get', '/drivers', {req, res});
 });
