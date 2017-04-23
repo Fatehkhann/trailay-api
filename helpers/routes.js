@@ -1,6 +1,7 @@
 const { driverSchema } = require('./../models/driver.js');
 const { contractorSchema } = require('./../models/contractor.js');
 const { logSchema } = require('./../models/log.js');
+const { ObjectID } = require('mongodb');
 
 //Driver's signup function
 
@@ -9,7 +10,7 @@ function getResponse(reqType, path, routeObject) {
 
     switch (reqType) {
         case "get":
-            // req = routeObject.req;
+            req = routeObject.req;
             res = routeObject.res;
             switch (path) {
                 case '/':
@@ -18,6 +19,17 @@ function getResponse(reqType, path, routeObject) {
                 case '/drivers':
                     driverSchema.find().then((drivers) => {
                         res.status(200).send({drivers});
+                    }, (err) => {
+                        res.status(400).send('Error occured');
+                    })
+                    break;
+                case '/driver/:id':
+                    var id = req.params.id;
+                    if(!ObjectID.isValid(id)) {
+                        return res.status(404).send();
+                    }
+                    driverSchema.findById(id).then((driver) => {
+                        res.status(200).send({driver});
                     }, (err) => {
                         res.status(400).send('Error occured');
                     })

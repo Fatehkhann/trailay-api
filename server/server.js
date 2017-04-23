@@ -7,14 +7,12 @@ const {driverSchema} = require('./../models/driver.js');
 
 var app = express();
 app.use(bodyParser.json());
-const nodePort = 3000;
+const nodePort = process.env.PORT || 3000;
 
 app.listen(nodePort,() => {
     console.log('Server is up and running on port', nodePort);
 });
 
-
-module.exports = {app};
 
 //API ROUTES
 app.post('/signup/driver', (req, res) => {
@@ -31,6 +29,10 @@ app.post('/addLog', (req, res) => {
 
 app.get('/drivers', (req, res) => {
     route.getResponse('get', '/drivers', {req, res});
+});
+
+app.get('/driver/:id', (req, res) => {
+    route.getResponse('get', '/driver/:id', {req, res});
 });
 
 app.get('/contractors', (req, res) => {
