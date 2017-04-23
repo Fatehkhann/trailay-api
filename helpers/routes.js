@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 const { driverSchema } = require('./../models/driver.js');
 const { contractorSchema } = require('./../models/contractor.js');
 const { logSchema } = require('./../models/log.js');
@@ -112,6 +114,95 @@ function getResponse(reqType, path, routeObject) {
             }
             break;
 
+        case 'delete':
+            req = routeObject.req;
+            res = routeObject.res;
+            switch (path) {
+                case '/driver/:id':
+                    var id = req.params.id;
+                    if(!ObjectID.isValid(id)) {
+                        return res.status(404).send();
+                    }
+                    driverSchema.findByIdAndRemove(id).then((driver) => {
+                        res.status(200).send({driver});
+                    }, (err) => {
+                        res.status(400).send('Error occured');
+                    })
+                    break;
+                case '/contractor/:id':
+                    var id = req.params.id;
+                    if(!ObjectID.isValid(id)) {
+                        return res.status(404).send();
+                    }
+                    contractorSchema.findByIdAndRemove(id).then((contractor) => {
+                        res.status(200).send({contractor});
+                    }, (err) => {
+                        res.status(400).send('Error occured');
+                    })
+                    break;
+                case '/log/:id':
+                    var id = req.params.id;
+                    if(!ObjectID.isValid(id)) {
+                        return res.status(404).send();
+                    }
+                    logSchema.findByIdAndRemove(id).then((log) => {
+                        res.status(200).send({log});
+                    }, (err) => {
+                        res.status(400).send('Error occured');
+                    })
+                    break;
+                default: 
+                    res.status(400).send('Bad request');
+                    break;
+            }
+            break;
+
+        case 'patch':
+            req = routeObject.req;
+            res = routeObject.res;
+            switch (path) {
+                case '/driver/:id':
+                    var id = req.params.id;
+                    var body = _.pick(req.body, ['firstName', 'lastName'])
+                    if(!ObjectID.isValid(id)) {
+                        return res.status(404).send();
+                    }
+                    driverSchema.findByIdAndUpdate(id, {$set: body}, {new: true}).then((driver) => {
+                        res.status(200).send({driver});
+                    }, (err) => {
+                        res.status(400).send('Error occured');
+                    })
+                    break;
+                case '/contractor/:id':
+                    var id = req.params.id;
+                    var body = _.pick(req.body, ['firstName', 'lastName', 'city'])
+                    if(!ObjectID.isValid(id)) {
+                        return res.status(404).send();
+                    }
+                    contractorSchema.findByIdAndUpdate(id, {$set: body}, {new: true}).then((contractor) => {
+                        res.status(200).send({contractor});
+                    }, (err) => {
+                        res.status(400).send('Error occured');
+                    })
+                    break;
+                case '/log/:id':
+                    var id = req.params.id;
+                    var body = _.pick(req.body, ['completed'])
+                    if(!ObjectID.isValid(id)) {
+                        return res.status(404).send();
+                    }
+                    logSchema.findByIdAndUpdate(id, {$set: body}, {new: true}).then((log) => {
+                        res.status(200).send({log});
+                    }, (err) => {
+                        res.status(400).send('Error occured');
+                    })
+                    break;
+                default: 
+                    res.status(400).send('Bad request');
+                    break;
+            }
+            break;
+        
         default:
             console.log('Unauthorized Access');
             break;

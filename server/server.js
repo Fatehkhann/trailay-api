@@ -15,11 +15,13 @@ app.listen(nodePort,() => {
 
 
 //API ROUTES
+
+////////////////////////POST
 app.post('/signup/driver', (req, res) => {
     route.getResponse('post', '/signup/driver', {req, res});
 });
 
-app.post('/signup/contractors', (req, res) => {
+app.post('/signup/contractor', (req, res) => {
     route.getResponse('post', '/signup/contractor', {req, res});
 });
 
@@ -27,6 +29,7 @@ app.post('/addLog', (req, res) => {
     route.getResponse('post', '/addLog', {req, res});
 });
 
+/////////////////////////GET
 app.get('/', (req, res) => {
     route.getResponse('get', '/', {req, res});
 });
@@ -47,10 +50,33 @@ app.get('/logs', (req, res) => {
     route.getResponse('get', '/logs', {req, res});
 });
 
-// route.addRoute('post', '/signup/contractor');
-// route.addRoute('post', '/addLog');
-// route.addRoute('get', '/function');
-// route.addRoute('get', '/');
-//route.addRoute('get', '/drivers');
+//////////////////////////////// DELETE
+
+app.delete('/driver/:id', (req, res) => {
+    route.getResponse('delete', '/driver/:id', {req, res});
+});
+
+app.delete('/contractor/:id', (req, res) => {
+    route.getResponse('delete', '/contractor/:id', {req, res});
+});
+
+app.delete('/log/:id', (req, res) => {
+    route.getResponse('delete', '/log/:id', {req, res});
+});
+
+//////////////////////////////// PATCH 
+
+app.patch('/driver/:id', (req, res) => {
+    route.getResponse('patch', '/driver/:id', {req, res});
+})
+
+app.patch('/contractor/:id', (req, res) => {
+    route.getResponse('patch', '/contractor/:id', {req, res});
+})
+
+app.patch('/log/:id', (req, res) => {
+    route.getResponse('patch', '/log/:id', {req, res});
+})
+
 
 
