@@ -4,7 +4,8 @@
   "description": "RESTful API of Trailay",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha server/**/*.test.js",
+    "test-watch":"nodemon --exec 'npm test'",
     "start": "nodemon server/server.js"
   },
   "repository": {
@@ -22,8 +23,16 @@
   },
   "homepage": "https://github.com/Fatehkhann/trailay-api#readme",
   "dependencies": {
+    "body-parser": "^1.17.1",
     "express": "^4.15.2",
     "mongodb": "^2.2.26",
-    "mongoose": "^4.9.5"
+    "mongoose": "^4.9.5",
+    "validator": "^7.0.0"
+  },
+  "devDependencies": {
+    "expect": "^1.20.2",
+    "mocha": "^3.2.0",
+    "nodemon": "^1.11.0",
+    "supertest": "^2.0.0"
   }
 }
