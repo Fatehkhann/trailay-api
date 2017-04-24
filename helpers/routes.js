@@ -7,7 +7,7 @@ const { ObjectID } = require('mongodb');
 
 //Driver's signup function
 
-function getResponse(reqType, path, routeObject) {
+function getResponse(reqType, path, authenticate, routeObject) {
     var { app } = require('../server/server');
 
     switch (reqType) {
@@ -36,6 +36,9 @@ function getResponse(reqType, path, routeObject) {
                         res.status(400).send('Error occured');
                     })
                     break;
+                case '/drivers/me':
+                    res.send(req.driver);
+                    break;
                 case '/contractors':
                     contractorSchema.find().then((contractors) => {
                         res.status(200).send({contractors});
@@ -61,46 +64,55 @@ function getResponse(reqType, path, routeObject) {
             res = routeObject.res;
             switch (path) {
                 case '/signup/driver':
-                    var driverAbdul = new driverSchema({
-                        firstName: req.body.firstName,
-                        lastName: req.body.lastName,
-                        email: req.body.email,
-                        password: req.body.password,
-                        phone: req.body.phone,
+                    var body = _.pick(req.body, ['firstName', 'lastName', 'email', 'password', 'phone']);
+                    var driver = new driverSchema({
+                        firstName: body.firstName,
+                        lastName: body.lastName,
+                        email: body.email,
+                        password: body.password,
+                        phone: body.phone,
                     });
-                    driverAbdul.save().then((doc) => {
-                        res.status(200).send(doc);
-                    }, (err) => {
-                        res.status(400).send('Failed' + err);
-                    });
+                    driver.save().then(() => {
+                        return driver.generateAuthToken();
+                    }).then((token) => {
+                        res.header({'x-auth': token}).send(driver);
+                    }).catch((e) => {
+                        res.status(400).send(e);
+                    })
                     break;
                 case '/signup/contractor':
+                    var body = _.pick(req.body, ['firstName', 'lastName', 'email', 'password', 'phone', 'city']);
                     var contractor = new contractorSchema({
-                        firstName: req.body.firstName,
-                        lastName: req.body.lastName,
-                        email: req.body.email,
-                        password: req.body.password,
-                        phone: req.body.phone,
-                        city: req.body.city
+                        firstName: body.firstName,
+                        lastName: body.lastName,
+                        email: body.email,
+                        password: body.password,
+                        phone: body.phone,
+                        city: body.city
                     });
-                    contractor.save().then((doc) => {
-                        res.status(200).send(doc);
-                    }, (err) => {
-                        res.status(400).send('Failed' + err);
-                    });
+                    contractor.save().then(() => {
+                        return contractor.generateAuthToken();
+                    }).then((token) => {
+                        res.header({'x-auth': token}).send(contractor);
+                    }).catch((e) => {
+                        res.status(400).send(e);
+                    })
                     break;
                 case '/addLog':
+                    var body = _.pick(req.body, ['driverId', 'driverName', 'startingPoint', 
+                    'destination', 'contractorName', 'contractorId', 'distance', 
+                    'hoursOnRoad', 'date', 'completed']);
                     var driverLog = new logSchema({
-                        driverId: req.body.driverId,
-                        driverName: req.body.driverName,
-                        startingPoint: req.body.startingPoint,
-                        destination: req.body.destination,
-                        contractorName: req.body.contractorName,
-                        contractorId: req.body.contractorId,
-                        distance: req.body.distance,
-                        hoursOnRoad: req.body.hoursOnRoad,
-                        date: req.body.date,
-                        completed: req.body.completed,
+                        driverId: body.driverId,
+                        driverName: body.driverName,
+                        startingPoint: body.startingPoint,
+                        destination: body.destination,
+                        contractorName: body.contractorName,
+                        contractorId: body.contractorId,
+                        distance: body.distance,
+                        hoursOnRoad: body.hoursOnRoad,
+                        date: body.date,
+                        completed: body.completed,
                     });
                     driverLog.save().then((doc) => {
                         res.status(200).send(doc);
@@ -209,6 +221,6 @@ function getResponse(reqType, path, routeObject) {
     }
 }
 
+// Export above function to server.js file, so routes could be setup
 module.exports = { getResponse }
 
-///// Driver's signup function ENDED /////////////

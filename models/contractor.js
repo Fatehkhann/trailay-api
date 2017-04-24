@@ -1,8 +1,10 @@
 const validator = require('validator');
+const jwt = require('jsonwebtoken');
+const _ = require('lodash');
 
-const {mongoose} = require('../server/db/mongoose');
+const {mongooseConn} = require('../server/db/mongoose');
 
-module.exports.contractorSchema = mongoose.model('contractors', {
+var ContractorSchema = new mongooseConn.Schema({
     firstName: {
         type: String,
         name: 'firstName',
@@ -21,6 +23,7 @@ module.exports.contractorSchema = mongoose.model('contractors', {
 
     phone: {
         type: String,
+        unique: true,
         validate: {
           validator: function(v) {
             return /\d{4}-\d{7}/.test(v);
@@ -37,6 +40,7 @@ module.exports.contractorSchema = mongoose.model('contractors', {
         required: true,
         minLength: 7,
         trim: true,
+        unique: true,
         validate: {
             isAsync: true,
             validator: validator.isEmail,
@@ -54,6 +58,38 @@ module.exports.contractorSchema = mongoose.model('contractors', {
     city: {
         type: String,
         required: false
-    }
+    },
+    
+    tokens: [{
+        access: {
+            type: String,
+            required: true
+        },
+        token: {
+            type: String,
+            required: true
+        }
+    }]
 
-})
+});
+
+ContractorSchema.methods.generateAuthToken = function() {
+    var contractor = this;
+    var access = 'auth';
+    var token = jwt.sign({_id: contractor._id.toHexString(), access}, 'abc123').toString();
+
+    contractor.tokens.push({access, token});
+
+    return contractor.save().then(() => {
+        return token;
+    });
+}
+
+ContractorSchema.methods.toJSON = function() {
+    var contractor = this;
+    var contractorObject = contractor.toObject();
+
+    return _.pick(contractorObject, ['_id', 'email', 'firstName']);
+}
+
+module.exports.contractorSchema = mongooseConn.model('Contractor', ContractorSchema);

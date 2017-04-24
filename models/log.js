@@ -1,8 +1,8 @@
 const validator = require('validator');
 
-const {mongoose} = require('../server/db/mongoose');
+const {mongooseConn} = require('../server/db/mongoose');
 
-module.exports.logSchema = mongoose.model('Logs', {
+module.exports.logSchema = mongooseConn.model('Logs', {
     driverId: {
         type: String,
         name: 'driverId',
