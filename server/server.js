@@ -72,6 +72,10 @@ app.delete('/log/:id', (req, res) => {
     route.getResponse('delete', '/log/:id', undefined, {req, res});
 });
 
+app.delete('/drivers/me/token', authenticate, (req, res) => {
+    route.getResponse('delete', '/drivers/me/token', authenticate, {req, res});
+});
+
 //////////////////////////////// PATCH 
 
 app.patch('/driver/:id', (req, res) => {

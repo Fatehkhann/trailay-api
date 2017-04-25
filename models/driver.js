@@ -81,6 +81,15 @@ DriverSchema.methods.generateAuthToken = function() {
     });
 }
 
+DriverSchema.methods.removeToken = function (token) {
+    var driver = this;
+
+    return driver.update({
+        $pull: {
+            tokens: { token }
+        }
+    })
+}
 
 DriverSchema.methods.toJSON = function() {
     var driver = this;

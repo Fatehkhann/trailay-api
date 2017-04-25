@@ -173,6 +173,13 @@ function getResponse(reqType, path, authenticate, routeObject) {
                         res.status(400).send('Error occured');
                     })
                     break;
+                case '/drivers/me/token':
+                    req.driver.removeToken(req.token).then(()=> {
+                        res.status(200).send();
+                    }).catch((e) => {
+                        res.status(400).send(e);
+                    });
+                    break;
                 default: 
                     res.status(400).send('Bad request');
                     break;
