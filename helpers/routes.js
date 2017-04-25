@@ -120,6 +120,16 @@ function getResponse(reqType, path, authenticate, routeObject) {
                         res.status(400).send('Failed' + err);
                     });
                     break;
+                case '/driver/login':
+                    var body = _.pick(req.body, ['email', 'password']);
+                    driverSchema.findByCredentials(body.email, body.password).then((driver) => {
+                        return driver.generateAuthToken().then((token) => {
+                            res.header('x-auth', token).send(driver);
+                        })
+                    }).catch((e) => {
+                        res.status(400).send();
+                    })
+                    break;
                 default:
                     res.status(400).send('Bad request');
                     break;

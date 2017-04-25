@@ -21,6 +21,10 @@ app.post('/signup/driver', (req, res) => {
     route.getResponse('post', '/signup/driver', undefined, {req, res});
 });
 
+app.post('/driver/login', (req, res) => {
+    route.getResponse('post', '/driver/login', undefined, {req, res});
+});
+
 app.post('/signup/contractor', (req, res) => {
     route.getResponse('post', '/signup/contractor', undefined, {req, res});
 });

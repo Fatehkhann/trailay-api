@@ -1,6 +1,7 @@
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
+const bcrypt = require("bcryptjs");
 
 const {mongooseConn} = require('../server/db/mongoose');
 
@@ -67,7 +68,7 @@ var DriverSchema = new mongooseConn.Schema({
     }]
 });
 
-// Model Methods
+// Instance Methods
 DriverSchema.methods.generateAuthToken = function() {
     var driver = this;
     var access = 'auth';
@@ -80,6 +81,7 @@ DriverSchema.methods.generateAuthToken = function() {
     });
 }
 
+
 DriverSchema.methods.toJSON = function() {
     var driver = this;
     var driverObject = driver.toObject();
@@ -87,7 +89,27 @@ DriverSchema.methods.toJSON = function() {
     return _.pick(driverObject, ['_id', 'email', 'firstName']);
 }
 
-//Instance Methods 
+//Model Methods 
+
+DriverSchema.statics.findByCredentials = function(email, password) {
+    var Driver = this;
+
+    return Driver.findOne({email}).then((driver) => {
+        if(!driver) {
+            return Promise.reject();
+        }
+        return new Promise((resolve, reject) =>{
+            bcrypt.compare(password, driver.password, (err, res) => {
+                if(res) {
+                    resolve(driver);
+                } else {
+                    reject();
+                }
+            })
+        })
+    })
+}
+
 DriverSchema.statics.findByToken = function(token) {
     var Driver = this;
     var decoded = undefined;
@@ -104,5 +126,22 @@ DriverSchema.statics.findByToken = function(token) {
         'tokens.access': 'auth'
     })
 }
+
+//Mongoose Middleware
+
+DriverSchema.pre('save', function(next) {
+    var driver = this;
+
+    if(driver.isModified('password')) {
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(driver.password, salt, (err, hash) => {
+                driver.password = hash;
+                next();
+            })
+        })
+    } else {
+        next();
+    }
+});
 
 module.exports.driverSchema = mongooseConn.model('Driver', DriverSchema )
