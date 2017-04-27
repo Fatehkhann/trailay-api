@@ -72,7 +72,7 @@ var DriverSchema = new mongooseConn.Schema({
 DriverSchema.methods.generateAuthToken = function() {
     var driver = this;
     var access = 'auth';
-    var token = jwt.sign({_id: driver._id.toHexString(), access}, 'abc123').toString();
+    var token = jwt.sign({_id: driver._id.toHexString(), access}, process.env.JWT_SECRET).toString();
 
     driver.tokens.push({access, token});
 
@@ -124,7 +124,7 @@ DriverSchema.statics.findByToken = function(token) {
     var decoded = undefined;
 
     try {
-        decoded = jwt.verify(token, 'abc123');
+        decoded = jwt.verify(token, process.env.JWT_SECRET);
     } catch(e) {
         return Promise.reject();
     }

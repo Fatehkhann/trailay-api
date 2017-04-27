@@ -47,7 +47,26 @@ function getResponse(reqType, path, authenticate, routeObject) {
                     })
                     break;
                 case '/logs':
-                    logSchema.find().then((logs) => {
+                    logSchema.find({
+                        _logCreator: req.driver._id
+                    }).then((logs) => {
+                        res.status(200).send({logs});
+                    }, (err) => {
+                        res.status(400).send('Error occured');
+                    })
+                    break;
+                case '/logs/:id':
+                    var id = req.params.id;
+                    if(!ObjectID.isValid(id)) {
+                        return resizeBy.status(404).send();
+                    }
+                    logSchema.findOne({
+                        _id: id,
+                        _logCreator: req.driver._id
+                    }).then((logs) => {
+                        if(!logs) {
+                            return res.status(404).send();
+                        }
                         res.status(200).send({logs});
                     }, (err) => {
                         res.status(400).send('Error occured');
@@ -113,6 +132,7 @@ function getResponse(reqType, path, authenticate, routeObject) {
                         hoursOnRoad: body.hoursOnRoad,
                         date: body.date,
                         completed: body.completed,
+                        _logCreator: req.driver._id
                     });
                     driverLog.save().then((doc) => {
                         res.status(200).send(doc);
@@ -167,7 +187,10 @@ function getResponse(reqType, path, authenticate, routeObject) {
                     if(!ObjectID.isValid(id)) {
                         return res.status(404).send();
                     }
-                    logSchema.findByIdAndRemove(id).then((log) => {
+                    logSchema.findOneAndRemove({
+                        _id: id,
+                        _logCreator: req.driver._id
+                    }).then((log) => {
                         res.status(200).send({log});
                     }, (err) => {
                         res.status(400).send('Error occured');
@@ -220,7 +243,10 @@ function getResponse(reqType, path, authenticate, routeObject) {
                     if(!ObjectID.isValid(id)) {
                         return res.status(404).send();
                     }
-                    logSchema.findByIdAndUpdate(id, {$set: body}, {new: true}).then((log) => {
+                    logSchema.findOneAndUpdate({
+                        _id: id,
+                        _logCreator: req.driver._id
+                    }, {$set: body}, {new: true}).then((log) => {
                         res.status(200).send({log});
                     }, (err) => {
                         res.status(400).send('Error occured');

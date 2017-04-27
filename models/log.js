@@ -60,6 +60,11 @@ module.exports.logSchema = mongooseConn.model('Logs', {
     completed: {
         type: Boolean,
         name: 'completed'
+    },
+
+    _logCreator: {
+        required: true,
+        type: mongooseConn.Schema.Types.ObjectId,
     }
 
 })

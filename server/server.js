@@ -1,3 +1,5 @@
+require('./config/config');
+
 const express = require('express');
 const route = require('../helpers/routes');
 const bodyParser = require('body-parser');
@@ -29,8 +31,8 @@ app.post('/signup/contractor', (req, res) => {
     route.getResponse('post', '/signup/contractor', undefined, {req, res});
 });
 
-app.post('/addLog', (req, res) => {
-    route.getResponse('post', '/addLog', undefined, {req, res});
+app.post('/addLog', authenticate, (req, res) => {
+    route.getResponse('post', '/addLog', authenticate, {req, res});
 });
 
 /////////////////////////GET
@@ -54,8 +56,12 @@ app.get('/contractors', (req, res) => {
     route.getResponse('get', '/contractors', undefined, {req, res});
 });
 
-app.get('/logs', (req, res) => {
-    route.getResponse('get', '/logs', undefined, {req, res});
+app.get('/logs', authenticate, (req, res) => {
+    route.getResponse('get', '/logs', authenticate, {req, res});
+});
+
+app.get('/logs/:id', authenticate, (req, res) => {
+    route.getResponse('get', '/logs/:id', authenticate, {req, res});
 });
 
 //////////////////////////////// DELETE
@@ -68,8 +74,8 @@ app.delete('/contractor/:id', (req, res) => {
     route.getResponse('delete', '/contractor/:id', undefined, {req, res});
 });
 
-app.delete('/log/:id', (req, res) => {
-    route.getResponse('delete', '/log/:id', undefined, {req, res});
+app.delete('/log/:id', authenticate, (req, res) => {
+    route.getResponse('delete', '/log/:id', authenticate, {req, res});
 });
 
 app.delete('/drivers/me/token', authenticate, (req, res) => {
@@ -86,8 +92,8 @@ app.patch('/contractor/:id', (req, res) => {
     route.getResponse('patch', '/contractor/:id', undefined, {req, res});
 })
 
-app.patch('/log/:id', (req, res) => {
-    route.getResponse('patch', '/log/:id', undefined, {req, res});
+app.patch('/log/:id', authenticate, (req, res) => {
+    route.getResponse('patch', '/log/:id', authenticate, {req, res});
 })
 
 
