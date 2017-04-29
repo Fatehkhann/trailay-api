@@ -2,14 +2,8 @@ const validator = require('validator');
 
 const {mongooseConn} = require('../server/db/mongoose');
 
-module.exports.logSchema = mongooseConn.model('Logs', {
-    driverId: {
-        type: String,
-        name: 'driverId',
-        required: true,
-        minLength: 8,
-        trim: true
-    },
+var LogSchema = new mongooseConn.Schema({
+
     startingPoint: {
         type: String,
         name: 'startingPoint',
@@ -50,7 +44,7 @@ module.exports.logSchema = mongooseConn.model('Logs', {
         trim: true,
     },
 
-    date: {
+    date_added: {
         type: Date,
         name: 'date',
         required: true,
@@ -63,8 +57,9 @@ module.exports.logSchema = mongooseConn.model('Logs', {
     },
 
     _logCreator: {
-        required: true,
         type: mongooseConn.Schema.Types.ObjectId,
+        required: true
     }
+});
 
-})
+module.exports.logSchema = mongooseConn.model('Logs', LogSchema);

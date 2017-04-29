@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 
 const {mongooseConn} = require('../server/db/mongoose');
 
-var DriverSchema = new mongooseConn.Schema({
+var UserSchema = new mongooseConn.Schema({
     firstName: {
         type: String,
         name: 'firstName',
@@ -55,6 +55,21 @@ var DriverSchema = new mongooseConn.Schema({
         minlength: 6,
         trim: true
     },
+
+    role: {
+        type: String,
+        required: false,
+        default: 'driver'
+    },
+    parent_user: {
+        type: mongooseConn.Schema.Types.ObjectId,
+        required: false
+    },
+
+    city: {
+        type: String,
+        required: false
+    },
     
     tokens: [{
         access: {
@@ -69,48 +84,48 @@ var DriverSchema = new mongooseConn.Schema({
 });
 
 // Instance Methods
-DriverSchema.methods.generateAuthToken = function() {
-    var driver = this;
+UserSchema.methods.generateAuthToken = function() {
+    var user = this;
     var access = 'auth';
-    var token = jwt.sign({_id: driver._id.toHexString(), access}, process.env.JWT_SECRET).toString();
+    var token = jwt.sign({_id: user._id.toHexString(), access}, process.env.JWT_SECRET).toString();
 
-    driver.tokens.push({access, token});
+    user.tokens.push({access, token});
 
-    return driver.save().then(() => {
+    return user.save().then(() => {
         return token;
     });
 }
 
-DriverSchema.methods.removeToken = function (token) {
-    var driver = this;
+UserSchema.methods.removeToken = function (token) {
+    var user = this;
 
-    return driver.update({
+    return user.update({
         $pull: {
             tokens: { token }
         }
     })
 }
 
-DriverSchema.methods.toJSON = function() {
-    var driver = this;
-    var driverObject = driver.toObject();
+UserSchema.methods.toJSON = function() {
+    var user = this;
+    var userObject = user.toObject();
 
-    return _.pick(driverObject, ['_id', 'email', 'firstName']);
+    return _.pick(userObject, ['_id', 'email', 'firstName']);
 }
 
 //Model Methods 
 
-DriverSchema.statics.findByCredentials = function(email, password) {
-    var Driver = this;
+UserSchema.statics.findByCredentials = function(email, password) {
+    var user = this;
 
-    return Driver.findOne({email}).then((driver) => {
-        if(!driver) {
+    return user.findOne({email}).then((user) => {
+        if(!user) {
             return Promise.reject();
         }
         return new Promise((resolve, reject) =>{
-            bcrypt.compare(password, driver.password, (err, res) => {
+            bcrypt.compare(password, user.password, (err, res) => {
                 if(res) {
-                    resolve(driver);
+                    resolve(user);
                 } else {
                     reject();
                 }
@@ -119,8 +134,8 @@ DriverSchema.statics.findByCredentials = function(email, password) {
     })
 }
 
-DriverSchema.statics.findByToken = function(token) {
-    var Driver = this;
+UserSchema.statics.findByToken = function(token) {
+    var user = this;
     var decoded = undefined;
 
     try {
@@ -129,7 +144,7 @@ DriverSchema.statics.findByToken = function(token) {
         return Promise.reject();
     }
 
-    return Driver.findOne({
+    return user.findOne({
         '_id': decoded._id,
         'tokens.token': token,
         'tokens.access': 'auth'
@@ -138,13 +153,13 @@ DriverSchema.statics.findByToken = function(token) {
 
 //Mongoose Middleware
 
-DriverSchema.pre('save', function(next) {
-    var driver = this;
+UserSchema.pre('save', function(next) {
+    var user = this;
 
-    if(driver.isModified('password')) {
+    if(user.isModified('password')) {
         bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(driver.password, salt, (err, hash) => {
-                driver.password = hash;
+            bcrypt.hash(user.password, salt, (err, hash) => {
+                user.password = hash;
                 next();
             })
         })
@@ -153,4 +168,4 @@ DriverSchema.pre('save', function(next) {
     }
 });
 
-module.exports.driverSchema = mongooseConn.model('Driver', DriverSchema )
+module.exports.userSchema = mongooseConn.model('user', UserSchema )

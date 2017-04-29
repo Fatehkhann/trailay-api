@@ -1,14 +1,14 @@
-const {driverSchema} = require('./../../models/driver.js');
+const {userSchema} = require('./../../models/user.js');
 
 //Middleware 
 
 var authenticate = (req, res, next) => {
     var token = req.header('x-auth');
-    driverSchema.findByToken(token).then((driver) => {
-        if (!driver) {
+    userSchema.findByToken(token).then((user) => {
+        if (!user) {
             return Promise.reject();
         }
-        req.driver = driver;
+        req.user = user;
         req.token = token;
         next();
     }).catch((err) => {

@@ -2,10 +2,10 @@ const expect = require('expect');
 const request = require('supertest');
 
 const {app} = require('./../server');
-const {driverSchema} = require('./../../models/driver');
+const {userSchema} = require('./../../models/user');
 
 beforeEach((done) => {
-    driverSchema.remove({}).then(() => done());
+    userSchema.remove({}).then(() => done());
 });
 
 describe('POST /signup', () => {
@@ -34,9 +34,9 @@ describe('POST /signup', () => {
                 return done(err);
             }
 
-            driverSchema.find().then((driverSchemas) => {
-                expect(driverSchemas.length).toBe(1);
-                expect(driverSchemas[0].lastName).toBe(lastName);
+            userSchema.find().then((userSchemas) => {
+                expect(userSchemas.length).toBe(1);
+                expect(userSchemas[0].lastName).toBe(lastName);
                 done();
             }).catch((e) => done(e));
         });

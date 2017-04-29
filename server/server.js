@@ -19,41 +19,37 @@ app.listen(nodePort,() => {
 //API ROUTES
 
 ////////////////////////POST
-app.post('/signup/driver', (req, res) => {
-    route.getResponse('post', '/signup/driver', undefined, {req, res});
+app.post('/signup/user', (req, res) => {
+    route.getResponse('post', '/signup/user', undefined, {req, res});
 });
 
-app.post('/driver/login', (req, res) => {
-    route.getResponse('post', '/driver/login', undefined, {req, res});
-});
-
-app.post('/signup/contractor', (req, res) => {
-    route.getResponse('post', '/signup/contractor', undefined, {req, res});
+app.post('/user/login', (req, res) => {
+    route.getResponse('post', '/user/login', undefined, {req, res});
 });
 
 app.post('/addLog', authenticate, (req, res) => {
     route.getResponse('post', '/addLog', authenticate, {req, res});
 });
 
+app.post('/addVehicle', authenticate, (req, res) => {
+    route.getResponse('post', '/addVehicle', authenticate, {req, res});
+});
+
 /////////////////////////GET
-app.get('/', (req, res) => {
-    route.getResponse('get', '/', undefined, {req, res});
+app.get('/', authenticate, (req, res) => {
+    route.getResponse('get', '/', authenticate, {req, res});
 });
 
-app.get('/drivers', (req, res) => {
-    route.getResponse('get', '/drivers', undefined, {req, res});
+app.get('/users', authenticate, (req, res) => {
+    route.getResponse('get', '/users', authenticate, {req, res});
 });
 
-app.get('/drivers/me', authenticate, (req, res) => {
-    route.getResponse('get', '/drivers/me', authenticate, {req, res});
+app.get('/users/me', authenticate, (req, res) => {
+    route.getResponse('get', '/users/me', authenticate, {req, res});
 });
 
-app.get('/driver/:id', (req, res) => {
-    route.getResponse('get', '/driver/:id', undefined, {req, res});
-});
-
-app.get('/contractors', (req, res) => {
-    route.getResponse('get', '/contractors', undefined, {req, res});
+app.get('/user/:id', authenticate, (req, res) => {
+    route.getResponse('get', '/user/:id', authenticate, {req, res});
 });
 
 app.get('/logs', authenticate, (req, res) => {
@@ -64,36 +60,44 @@ app.get('/logs/:id', authenticate, (req, res) => {
     route.getResponse('get', '/logs/:id', authenticate, {req, res});
 });
 
-//////////////////////////////// DELETE
-
-app.delete('/driver/:id', (req, res) => {
-    route.getResponse('delete', '/driver/:id', undefined, {req, res});
+app.get('/vehicles', authenticate, (req, res) => {
+    route.getResponse('get', '/vehicles', authenticate, {req, res});
 });
 
-app.delete('/contractor/:id', (req, res) => {
-    route.getResponse('delete', '/contractor/:id', undefined, {req, res});
+app.get('/vehicles/:id', authenticate, (req, res) => {
+    route.getResponse('get', '/vehicles/:id', authenticate, {req, res});
+});
+
+//////////////////////////////// DELETE
+
+app.delete('/user/:id', authenticate, (req, res) => {
+    route.getResponse('delete', '/user/:id', authenticate, {req, res});
 });
 
 app.delete('/log/:id', authenticate, (req, res) => {
     route.getResponse('delete', '/log/:id', authenticate, {req, res});
 });
 
-app.delete('/drivers/me/token', authenticate, (req, res) => {
-    route.getResponse('delete', '/drivers/me/token', authenticate, {req, res});
+app.delete('/users/me/token', authenticate, (req, res) => {
+    route.getResponse('delete', '/users/me/token', authenticate, {req, res});
+});
+
+app.delete('/vehicles/:id', authenticate, (req, res) => {
+    route.getResponse('delete', '/vehicles/:id', authenticate, {req, res});
 });
 
 //////////////////////////////// PATCH 
 
-app.patch('/driver/:id', (req, res) => {
-    route.getResponse('patch', '/driver/:id', undefined, {req, res});
-})
-
-app.patch('/contractor/:id', (req, res) => {
-    route.getResponse('patch', '/contractor/:id', undefined, {req, res});
+app.patch('/user/:id', authenticate, (req, res) => {
+    route.getResponse('patch', '/user/:id', authenticate, {req, res});
 })
 
 app.patch('/log/:id', authenticate, (req, res) => {
     route.getResponse('patch', '/log/:id', authenticate, {req, res});
+})
+
+app.patch('/vehicle/:id', authenticate, (req, res) => {
+    route.getResponse('patch', '/vehicle/:id', authenticate, {req, res});
 })
 
 
