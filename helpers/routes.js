@@ -116,7 +116,7 @@ function getResponse(reqType, path, authenticate, routeObject) {
                     }).then((token) => {
                         res.header({
                             'x-auth': token,
-                            'Access-Control-Allow-Origin':'*'
+                            'Access-Control-Allow-Origin':'http://localhost:4200'
                         }).send(user);
                     }).catch((e) => {
                         res.status(400).send(e);
