@@ -11,9 +11,6 @@ const {authenticate} = require('./middleware/middleware');
 var app = express();
 app.use(bodyParser.json());
 app.use(cors());
-//   app.use(express.methodOverride());
-//   app.use(app.router);
-//   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
 const nodePort = process.env.PORT || 3000;
 
