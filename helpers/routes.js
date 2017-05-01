@@ -149,7 +149,10 @@ function getResponse(reqType, path, authenticate, routeObject) {
                     var body = _.pick(req.body, ['email', 'password']);
                     userSchema.findByCredentials(body.email, body.password).then((user) => {
                         return user.generateAuthToken().then((token) => {
-                            res.header('x-auth', token).send(user);
+                            res.setHeader("Access-Control-Expose-Headers", "x-auth");
+                            res.header({
+                                'x-auth': token
+                            }).send(user);
                         })
                     }).catch((e) => {
                         res.status(400).send();
