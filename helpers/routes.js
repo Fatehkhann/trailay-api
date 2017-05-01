@@ -221,8 +221,8 @@ function getResponse(reqType, path, authenticate, routeObject) {
                     })
                     break;
                 case '/users/me/token':
-                    req.user.removeToken(req.token).then(()=> {
-                        res.status(200).send();
+                    req.user.removeToken(req.token).then((user)=> {
+                        res.status(200).send(user);
                     }).catch((e) => {
                         res.status(400).send(e);
                     });
