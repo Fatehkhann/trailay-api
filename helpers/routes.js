@@ -114,6 +114,7 @@ function getResponse(reqType, path, authenticate, routeObject) {
                     user.save().then(() => {
                         return user.generateAuthToken();
                     }).then((token) => {
+                        res.setHeader("Access-Control-Expose-Headers", "x-auth");
                         res.header({
                             'x-auth': token
                         }).send(user);
