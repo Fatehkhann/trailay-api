@@ -94,15 +94,19 @@ app.delete('/vehicles/:id', authenticate, (req, res) => {
 
 app.patch('/user/:id', authenticate, (req, res) => {
     route.getResponse('patch', '/user/:id', authenticate, {req, res});
-})
+});
+
+app.patch('/chngusertype', authenticate, (req, res) => {
+    route.getResponse('patch', '/chngusertype', authenticate, {req, res});
+});
 
 app.patch('/log/:id', authenticate, (req, res) => {
     route.getResponse('patch', '/log/:id', authenticate, {req, res});
-})
+});
 
 app.patch('/vehicle/:id', authenticate, (req, res) => {
     route.getResponse('patch', '/vehicle/:id', authenticate, {req, res});
-})
+});
 
 
 

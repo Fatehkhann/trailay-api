@@ -250,9 +250,21 @@ function getResponse(reqType, path, authenticate, routeObject) {
             switch (path) {
                 case '/user/:id':
                     var id = req.params.id;
-                    var body = _.pick(req.body, ['firstName', 'lastName'])
+                    var body = _.pick(req.body, ['firstName', 'lastName']);
                     if(!ObjectID.isValid(id)) {
                         return res.status(404).send();
+                    }
+                    userSchema.findByIdAndUpdate(id, {$set: body}, {new: true}).then((user) => {
+                        res.status(200).send({user});
+                    }, (err) => {
+                        res.status(400).send('Error occured');
+                    })
+                    break;
+                case '/chngusertype':
+                    var id = req.user._id;
+                    var body = _.pick(req.body, ['user_type']);
+                    if(!ObjectID.isValid(id)) {
+                        res.status(404).send('ID Not Valid');
                     }
                     userSchema.findByIdAndUpdate(id, {$set: body}, {new: true}).then((user) => {
                         res.status(200).send({user});

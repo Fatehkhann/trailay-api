@@ -56,7 +56,7 @@ var UserSchema = new mongooseConn.Schema({
         trim: true
     },
 
-    role: {
+    user_type: {
         type: String,
         required: false,
         default: 'driver'
@@ -110,7 +110,7 @@ UserSchema.methods.toJSON = function() {
     var user = this;
     var userObject = user.toObject();
 
-    return _.pick(userObject, ['_id', 'email', 'firstName']);
+    return _.pick(userObject, ['_id', 'email', 'firstName', 'user_type']);
 }
 
 //Model Methods 
