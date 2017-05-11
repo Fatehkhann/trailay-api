@@ -98,7 +98,8 @@ module.exports.userSchemaFields = {
             return /\d{5}-\d{7}-\d{1}/.test(v);
           },
           message: '{VALUE} is not a valid CNIC no or it is already taken!'
-        }
+        },
+        sparse: true
     },
 
     user_age: {
@@ -119,7 +120,8 @@ module.exports.userSchemaFields = {
 
     driving_licence_no: {
         type: String,
-        unique: true
+       unique: true,
+       sparse: true
     },
 
     driving_licence_city: {
