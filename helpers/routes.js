@@ -55,7 +55,7 @@ function getResponse(reqType, path, authenticate, routeObject) {
                     }
                     logSchema.findOne({
                         _id: id,
-                        _logCreator: req.user._id
+                        log_creator: req.user._id
                     }).then((logs) => {
                         if(!logs) {
                             return res.status(404).send();
@@ -103,13 +103,15 @@ function getResponse(reqType, path, authenticate, routeObject) {
             res = routeObject.res;
             switch (path) {
                 case '/signup/user':
-                    var body = _.pick(req.body, ['firstName', 'lastName', 'email', 'password', 'phone']);
+                    var body = _.pick(req.body, ['firstName', 'lastName', 'email', 'password', 'phone', 'created_at', 'updated_at']);
                     var user = new userSchema({
                         firstName: body.firstName,
                         lastName: body.lastName,
                         email: body.email,
                         password: body.password,
                         phone: body.phone,
+                        created_at: body.created_at,
+                        updated_at: body.updated_at
                     });
                     user.save().then(() => {
                         return user.generateAuthToken();
@@ -137,7 +139,7 @@ function getResponse(reqType, path, authenticate, routeObject) {
                         hoursOnRoad: body.hoursOnRoad,
                         date_added: body.date_added,
                         completed: body.completed,
-                        _logCreator: req.user._id
+                        log_reator: req.user._id
                     });
                     userLog.save().then((doc) => {
                         res.status(200).send(doc);
@@ -250,7 +252,11 @@ function getResponse(reqType, path, authenticate, routeObject) {
             switch (path) {
                 case '/user/:id':
                     var id = req.params.id;
-                    var body = _.pick(req.body, ['firstName', 'lastName']);
+                    var body = _.pick(req.body, ['firstName', 'lastName', 'phone', 
+                    'email', 'city', 'user_type', 'carriers_ids', 'duty_status', 'user_status',
+                    'created_at', 'updated_at', 'cnic_no', 'user_age', 'current_location', 'businessName', 'address', 
+                    'driving_licence_no', 'driving_licence_city', 'driving_licence_type', 'drivers', 'vehicles', '', ''
+                    , 'parent_user', 'city']);
                     if(!ObjectID.isValid(id)) {
                         return res.status(404).send();
                     }
@@ -274,7 +280,8 @@ function getResponse(reqType, path, authenticate, routeObject) {
                     break;
                 case '/log/:id':
                     var id = req.params.id;
-                    var body = _.pick(req.body, ['completed'])
+                    var body = _.pick(req.body, ['completed', 'destination', 'contractor_name', 'contractor_id', 'distance', 
+                    'hours_on_road', 'date_added', 'completed', 'log_creator'])
                     if(!ObjectID.isValid(id)) {
                         return res.status(404).send();
                     }
@@ -289,7 +296,10 @@ function getResponse(reqType, path, authenticate, routeObject) {
                     break;
                 case '/vehicle/:id':
                     var id = req.params.id;
-                    var body = _.pick(req.body, ['status'])
+                    var body = _.pick(req.body, ['vehicle_name', 'vehicle_owner_id', 'vehicle_trailay_id', 'vehicle_make', 
+                    'vehicle_model', 'vehicle_year', 'status', 'carrier_company_id', 'licence_plate_no', 'fuel_type', 'current_driver'
+                    , 'registration_city', 'total_mileage_covered', 'hours_on_road', 'date_added']);
+                    
                     if(!ObjectID.isValid(id)) {
                         return res.status(404).send();
                     }

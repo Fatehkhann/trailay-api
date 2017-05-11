@@ -1,73 +1,9 @@
 const _ = require('lodash');
-const validator = require('validator');
 
 const {mongooseConn} = require('../server/db/mongoose');
+const {vehicleSchemaFields} = require('./vehicleSchemaFields');
 
-var VehicleSchema = new mongooseConn.Schema({
-
-    vehicle_name: {
-        type: String,
-        minlength: 2,
-        required: false
-    },
-
-    vehicle_owner_id: {
-        type: String
-    },
-
-    vehicle_trailay_id: {
-        type: Number,
-        required: true
-    },
-
-    vehicle_make: {
-        type: String,
-        required: true
-    },
-
-    vehicle_model: {
-        type: String,
-        required: false
-    },
-
-    status: {
-        type: String
-    },
-
-    freight_company_id: {
-        type: mongooseConn.Schema.Types.ObjectId,
-        required: false
-    },
-    
-    number_plate_no: {
-        type: String,
-        required: true
-    },
-
-    registration_city: {
-        type: String
-    },
-
-    total_mileage_covered: {
-        type: Number,
-        name: 'distance',
-        trim: true
-      },
-
-    hours_on_road: {
-        type: String,
-        name: 'hoursOnRoad',
-        trim: true,
-    },
-
-    date_added: {
-        type: Date,
-        name: 'date',
-        required: true,
-        trim: true
-    }
-
-});
+var VehicleSchema = new mongooseConn.Schema(vehicleSchemaFields);
 
 //Instance Methods 
 

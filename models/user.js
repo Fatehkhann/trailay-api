@@ -1,88 +1,13 @@
-const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
 const bcrypt = require("bcryptjs");
+const {userSchemaFields} = require("./userSchemaFields");
+var autoIncrement = require('mongoose-auto-increment');
 
 const {mongooseConn} = require('../server/db/mongoose');
 
-var UserSchema = new mongooseConn.Schema({
-    firstName: {
-        type: String,
-        name: 'firstName',
-        required: true,
-        minLength: 2,
-        trim: true
-    },
-
-    lastName: {
-        type: String,
-        name: 'lastName',
-        required: true,
-        minLength: 2,
-        trim: true
-    },
-
-    phone: {
-        type: String,
-        unique: true,
-        validate: {
-          validator: function(v) {
-            return /\d{4}-\d{7}/.test(v);
-          },
-          message: '{VALUE} is not a valid phone number!'
-        },
-        required: [true, 'User phone number required'],
-        trim: true
-      },
-
-    email: {
-        type: String,
-        name: 'email',
-        required: true,
-        minLength: 7,
-        trim: true,
-        unique: true,
-        validate: {
-            isAsync: true,
-            validator: validator.isEmail,
-            message: '{value} is not a valid email'
-        }
-    },
-
-    password: {
-        type: String,
-        required: true,
-        minlength: 6,
-        trim: true
-    },
-
-    user_type: {
-        type: String,
-        required: false,
-        default: 'driver'
-    },
-    parent_user: {
-        type: mongooseConn.Schema.Types.ObjectId,
-        required: false
-    },
-
-    city: {
-        type: String,
-        required: false
-    },
-    
-    tokens: [{
-        access: {
-            type: String,
-            required: true
-        },
-        token: {
-            type: String,
-            required: true
-        }
-    }]
-});
-
+var UserSchema = new mongooseConn.Schema(userSchemaFields);
+autoIncrement.initialize(mongooseConn);
 // Instance Methods
 UserSchema.methods.generateAuthToken = function() {
     var user = this;
@@ -155,7 +80,6 @@ UserSchema.statics.findByToken = function(token) {
 
 UserSchema.pre('save', function(next) {
     var user = this;
-
     if(user.isModified('password')) {
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(user.password, salt, (err, hash) => {
@@ -167,5 +91,7 @@ UserSchema.pre('save', function(next) {
         next();
     }
 });
+
+UserSchema.plugin(autoIncrement.plugin, { model: 'user', field: 'user_index' });
 
 module.exports.userSchema = mongooseConn.model('user', UserSchema )

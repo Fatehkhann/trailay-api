@@ -18,14 +18,14 @@ var LogSchema = new mongooseConn.Schema({
         trim: true
     },
 
-    contractorName: {
+    contractor_name: {
         type: String,
         name: 'contractorName',
         required: true,
         trim: true
     },
 
-    contractorId: {
+    contractor_id: {
         type: String,
         name: 'contractorId',
         required: true,
@@ -38,7 +38,7 @@ var LogSchema = new mongooseConn.Schema({
         trim: true
       },
 
-    hoursOnRoad: {
+    hours_on_road: {
         type: String,
         name: 'hoursOnRoad',
         trim: true,
@@ -56,7 +56,7 @@ var LogSchema = new mongooseConn.Schema({
         name: 'completed'
     },
 
-    _logCreator: {
+    log_creator: {
         type: mongooseConn.Schema.Types.ObjectId,
         required: true
     }

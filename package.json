@@ -34,6 +34,7 @@
     "lodash": "^4.17.4",
     "mongodb": "^2.2.26",
     "mongoose": "^4.9.5",
+    "mongoose-auto-increment": "^5.0.1",
     "validator": "^7.0.0"
   },
   "devDependencies": {
