@@ -8,6 +8,7 @@ const {mongooseConn} = require('../server/db/mongoose');
 
 var UserSchema = new mongooseConn.Schema(userSchemaFields);
 autoIncrement.initialize(mongooseConn);
+
 // Instance Methods
 UserSchema.methods.generateAuthToken = function() {
     var user = this;
@@ -31,12 +32,22 @@ UserSchema.methods.removeToken = function (token) {
     })
 }
 
-UserSchema.methods.toJSON = function() {
-    var user = this;
-    var userObject = user.toObject();
+// UserSchema.methods.toJSON = function() {
+//     var user = this;
+//     var userObject = user.toObject();
 
-    return _.pick(userObject, ['_id', 'email', 'firstName', 'user_type']);
-}
+//     return _.pick(userObject, ['_id', 'email', 'firstName', 'user_type']);
+// }
+
+// UserSchema.methods.toJSONAsync = function(token) {
+//     var user = this;
+//     var userObject = this.findByToken(token).toObject();
+
+//     return _.pick(userObject, ['_id', 'email', 'phone', 'drivers']);
+// }
+
+
+
 
 //Model Methods 
 
@@ -73,7 +84,7 @@ UserSchema.statics.findByToken = function(token) {
         '_id': decoded._id,
         'tokens.token': token,
         'tokens.access': 'auth'
-    })
+    }, '_id firstName lastName phone')
 }
 
 //Mongoose Middleware

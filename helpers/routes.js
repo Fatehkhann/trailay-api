@@ -261,7 +261,7 @@ function getResponse(reqType, path, authenticate, routeObject) {
                         return res.status(404).send();
                     }
                     userSchema.findByIdAndUpdate(id, {$set: body}, {new: true}).then((user) => {
-                        res.status(200).send({user});
+                        res.status(200).send(_.pick(user, ['drivers', 'email', 'firstName', 'user_type']));
                     }, (err) => {
                         res.status(400).send('Error occured');
                     })
