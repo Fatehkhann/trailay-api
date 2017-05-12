@@ -133,13 +133,13 @@ function getResponse(reqType, path, authenticate, routeObject) {
                         userName: body.userName,
                         startingPoint: body.startingPoint,
                         destination: body.destination,
-                        contractorName: body.contractorName,
-                        contractorId: body.contractorId,
+                        contractor_name: body.contractorName,
+                        contractor_id: body.contractorId,
                         distance: body.distance,
                         hoursOnRoad: body.hoursOnRoad,
                         date_added: body.date_added,
                         completed: body.completed,
-                        log_reator: req.user._id
+                        log_creator: req.user._id
                     });
                     userLog.save().then((doc) => {
                         res.status(200).send(doc);
