@@ -41,7 +41,7 @@ function getResponse(reqType, path, authenticate, routeObject) {
                     break;
                 case '/logs':
                     logSchema.find({
-                        _logCreator: req.user._id
+                        log_creator: req.user._id
                     }).then((logs) => {
                         res.status(200).send({logs});
                     }, (err) => {
