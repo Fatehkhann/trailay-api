@@ -36,6 +36,20 @@ function getResponse(reqType, path, authenticate, routeObject) {
                         res.status(400).send('Error occured');
                     })
                     break;
+                case '/user/drivers/:id':
+                    var id = req.params.id;
+                    if (!ObjectID.isValid(id)) {
+                        return res.status(404).send();
+                    }
+                    userSchema.findById(id).then((user) => {
+                        userSchema.find({ _id: { $in: user.drivers } }).then((doc) => {
+                            res.status(200).send(doc);
+                        }, (err) => {
+                            res.status(400).send('Error occured');
+                        });
+
+                    });
+                    break;
                 case '/users/me':
                     res.send(req.user);
                     break;
@@ -261,7 +275,7 @@ function getResponse(reqType, path, authenticate, routeObject) {
                         return res.status(404).send();
                     }
                     userSchema.findByIdAndUpdate(id, {$set: body}, {new: true}).then((user) => {
-                        res.status(200).send(_.pick(user, ['drivers', 'email', 'firstName', 'user_type']));
+                        res.status(200).send(_.pick(user.toObject(), ['drivers', 'email', 'firstName', 'user_type']));
                     }, (err) => {
                         res.status(400).send('Error occured');
                     })
