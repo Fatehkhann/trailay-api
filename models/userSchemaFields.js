@@ -22,6 +22,7 @@ module.exports.userSchemaFields = {
     phone: {
         type: String,
         unique: true,
+        sparse: true,
         validate: {
           validator: function(v) {
             return /\d{4}-\d{7}/.test(v);
@@ -39,6 +40,7 @@ module.exports.userSchemaFields = {
         minLength: 7,
         trim: true,
         unique: true,
+        sparse: true,
         validate: {
             isAsync: true,
             validator: validator.isEmail,
