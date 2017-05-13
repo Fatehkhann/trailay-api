@@ -124,8 +124,8 @@ function getResponse(reqType, path, authenticate, routeObject) {
                         email: body.email,
                         password: body.password,
                         phone: body.phone,
-                        created_at: body.created_at,
-                        updated_at: body.updated_at
+                        created_at: Date(),
+                        updated_at: Date()
                     });
                     user.save().then(() => {
                         return user.generateAuthToken();
@@ -133,7 +133,7 @@ function getResponse(reqType, path, authenticate, routeObject) {
                         res.setHeader("Access-Control-Expose-Headers", "x-auth");
                         res.header({
                             'x-auth': token
-                        }).send(user);
+                        }).send(_.pick(user.toObject(), ['lastName', '_id', 'email', 'firstName', 'user_type']));
                     }).catch((e) => {
                         res.status(400).send(e);
                     })
