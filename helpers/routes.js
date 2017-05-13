@@ -269,16 +269,17 @@ function getResponse(reqType, path, authenticate, routeObject) {
                     var body = _.pick(req.body, ['firstName', 'lastName', 'phone', 
                     'email', 'city', 'user_type', 'carriers_ids', 'duty_status', 'user_status',
                     'created_at', 'updated_at', 'cnic_no', 'user_age', 'current_location', 'businessName', 'address', 
-                    'driving_licence_no', 'driving_licence_city', 'driving_licence_type', 'drivers', 'vehicles', '', ''
-                    , 'parent_user', 'city']);
+                    'driving_licence_no', 'driving_licence_city', 'driving_licence_type', 'vehicles', 'parent_user', 'city']);
+                    var driversBody = _.pick(req.body, ['drivers']);
+
                     if(!ObjectID.isValid(id)) {
                         return res.status(404).send();
                     }
-                    userSchema.findByIdAndUpdate(id, {$set: body}, {new: true}).then((user) => {
+                    userSchema.findByIdAndUpdate(id, {$set: body, $push: driversBody}, {upsert: false, new: true}).then((user) => {
                         res.status(200).send(_.pick(user.toObject(), ['drivers', 'email', 'firstName', 'user_type']));
                     }, (err) => {
                         res.status(400).send('Error occured');
-                    })
+                    });
                     break;
                 case '/chngusertype':
                     var id = req.user._id;
