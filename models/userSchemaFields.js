@@ -138,6 +138,8 @@ module.exports.userSchemaFields = {
 
     vehicles: [],
 
+    fleet_managers: [],
+
     carrier_licence_no: {
         type: String
     },
