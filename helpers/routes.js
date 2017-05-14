@@ -50,6 +50,21 @@ function getResponse(reqType, path, authenticate, routeObject) {
 
                     });
                     break;
+                case '/user/fleet_managers/:id':
+                    var id = req.params.id;
+                    if (!ObjectID.isValid(id)) {
+                        console.log('Error in sent id');
+                        return res.status(404).send();
+                    }
+                    userSchema.findById(id).then((user) => {
+                        userSchema.find({ _id: { $in: user.fleet_managers } }).then((doc) => {
+                            res.status(200).send(doc);
+                        }, (err) => {
+                            res.status(400).send('Error occured' + err);
+                        });
+
+                    });
+                    break;
                 case '/users/me':
                     res.send(req.user);
                     break;

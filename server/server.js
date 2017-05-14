@@ -60,6 +60,9 @@ app.get('/user/drivers/:id', authenticate, (req, res) => {
     route.getResponse('get', '/user/drivers/:id', authenticate, {req, res});
 });
 
+app.get('/user/fleet_managers/:id', authenticate, (req, res) => {
+    route.getResponse('get', '/user/fleet_managers/:id', authenticate, {req, res});
+});
 
 app.get('/logs', authenticate, (req, res) => {
     route.getResponse('get', '/logs', authenticate, {req, res});
