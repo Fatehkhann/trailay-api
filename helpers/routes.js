@@ -154,7 +154,7 @@ function getResponse(reqType, path, authenticate, routeObject) {
                     })
                     break;
                 case '/addLog':
-                    var body = _.pick(req.body, ['userId', 'userName', 'startingPoint', 
+                    var body = _.pick(req.body, ['userId', 'driversEmail','userName', 'starting_point', 
                     'destination', 'contractor_name', 'contractor_id', 'distance', 
                     'hoursOnRoad', 'date_added', 'completed', 'log_creator']);
                     var userLog = new logSchema({
