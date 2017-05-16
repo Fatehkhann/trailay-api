@@ -159,8 +159,8 @@ function getResponse(reqType, path, authenticate, routeObject) {
                     'hoursOnRoad', 'date_added', 'completed', 'log_creator']);
                     var userLog = new logSchema({
                         userId: body.userId,
+                        driversEmail: body.driversEmail,
                         userName: body.userName,
-                        startingPoint: body.startingPoint,
                         destination: body.destination,
                         contractor_name: body.contractor_name,
                         contractor_id: body.contractor_id,
@@ -168,7 +168,8 @@ function getResponse(reqType, path, authenticate, routeObject) {
                         hoursOnRoad: body.hoursOnRoad,
                         date_added: body.date_added,
                         completed: body.completed,
-                        log_creator: req.user._id
+                        log_creator: req.user._id,
+                        starting_point: body.starting_point
                     });
                     userLog.save().then((doc) => {
                         res.status(200).send(doc);
