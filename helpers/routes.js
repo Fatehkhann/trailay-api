@@ -19,7 +19,7 @@ function getResponse(reqType, path, authenticate, routeObject) {
                     res.send('Trailay API Homepage');
                     break;
                 case '/users':
-                    userSchema.find().then((users) => {
+                    userSchema.find(req.body).then((users) => {
                         res.status(200).send({users});
                     }, (err) => {
                         res.status(400).send('Error occured');
@@ -291,7 +291,7 @@ function getResponse(reqType, path, authenticate, routeObject) {
                     if(!ObjectID.isValid(id)) {
                         return res.status(404).send();
                     }
-                    userSchema.findByIdAndUpdate(id, {$set: body, $push: arrayBody}, {upsert: false, new: true}).then((user) => {
+                    userSchema.findByIdAndUpdate(id, {$set: body, $push: arrayBody || {}}, {upsert: false, new: true}).then((user) => {
                         res.status(200).send(_.pick(user.toObject(), ['drivers', 'email', 'firstName', 'user_type']));
                     }, (err) => {
                         res.status(400).send('Error occured: ' + err);
