@@ -194,7 +194,7 @@ function getResponse(reqType, path, authenticate, routeObject) {
                 case '/addVehicle':
                     var body = _.pick(req.body, ['vehicle_name',
                     'vehicle_trailay_id','vehicle_make','vehicle_model',
-                    'status','freight_company_id', 
+                    'status','freight_company_id', 'pickup_capacity', 'engine_power',
                     'licence_plate_no', 'registration_city',
                     'total_mileage_covered', 'hours_on_road',
                     'date_added']);
@@ -210,7 +210,9 @@ function getResponse(reqType, path, authenticate, routeObject) {
                         registration_city: body.registration_city ,
                         total_mileage_covered: body.total_mileage_covered , 
                         hours_on_road: body.hours_on_road,
-                        date_added: body.date_added
+                        date_added: body.date_added,
+                        pickup_capacity: body.pickup_capacity,
+                        engine_power: body.engine_power
                     })
                     newVehicle.save().then((vehicle) => {
                         res.status(200).send(vehicle);
