@@ -1,5 +1,7 @@
 const validator = require('validator');
 
+const {mongooseConn} = require('../server/db/mongoose');
+
 module.exports.vehicleSchemaFields = {
 
     vehicle_name: {
@@ -9,12 +11,13 @@ module.exports.vehicleSchemaFields = {
     },
 
     vehicle_owner_id: {
-        type: String
+        type: mongooseConn.Schema.Types.ObjectId,
+        required: true
     },
 
     vehicle_trailay_id: {
         type: Number,
-        required: true
+        //required: true
     },
 
     vehicle_make: {
@@ -35,19 +38,23 @@ module.exports.vehicleSchemaFields = {
     status: {
         type: String
     },
-
-    carrier_company_id: [],
     
     licence_plate_no: {
         type: String,
         required: true
     },
 
-    fuel_type: {
+    engine_power: {
         type: String
     },
 
-    current_driver: [],
+    pickup_capacity: {
+        type: String
+    },
+
+    vehicle_driver: {
+        type: mongooseConn.Schema.Types.ObjectId
+    },
 
     registration_city: {
         type: String
