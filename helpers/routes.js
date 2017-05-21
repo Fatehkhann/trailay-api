@@ -99,6 +99,7 @@ function getResponse(reqType, path, authenticate, routeObject) {
                         if(!vehicles) {
                             return res.status(404).send();
                         }
+                       // _.pick(vehicles.toObject(), ['_id', 'vehicle_model', 'licence_plate_no', 'vehicle_driver', 'vehicle_name', 'vehicle_make', 'status', 'pickup_capacity', 'engine_power']
                         res.status(200).send({vehicles});
                     }, (err) => {
                         res.status(400).send('Error occured:' + err);
