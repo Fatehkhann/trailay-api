@@ -11,7 +11,7 @@ module.exports.vehicleSchemaFields = {
     },
 
     vehicle_owner_id: {
-        type: mongooseConn.Schema.Types.ObjectId,
+        type: String,
         required: true
     },
 
