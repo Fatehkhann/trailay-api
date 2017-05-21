@@ -194,7 +194,7 @@ function getResponse(reqType, path, authenticate, routeObject) {
                     var body = _.pick(req.body, ['vehicle_name',
                     'vehicle_trailay_id','vehicle_make','vehicle_model',
                     'status','freight_company_id', 
-                    'number_plate_no', 'registration_city',
+                    'licence_plate_no', 'registration_city',
                     'total_mileage_covered', 'hours_on_road',
                     'date_added']);
                     var newVehicle = new vehicleSchema({
@@ -205,7 +205,7 @@ function getResponse(reqType, path, authenticate, routeObject) {
                         vehicle_model: body.vehicle_model ,
                         status: body.status,
                         freight_company_id: body.freight_company_id , 
-                        number_plate_no: body.number_plate_no , 
+                        licence_plate_no: body.licence_plate_no , 
                         registration_city: body.registration_city ,
                         total_mileage_covered: body.total_mileage_covered , 
                         hours_on_road: body.hours_on_road,
