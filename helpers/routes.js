@@ -199,11 +199,11 @@ function getResponse(reqType, path, authenticate, routeObject) {
                     'vehicle_trailay_id','vehicle_make','vehicle_model',
                     'status','freight_company_id', 'pickup_capacity', 'engine_power',
                     'licence_plate_no', 'registration_city',
-                    'total_mileage_covered', 'hours_on_road',
+                    'total_mileage_covered', 'hours_on_road', 'vehicle_owner_id',
                     'date_added']);
                     var newVehicle = new vehicleSchema({
                         vehicle_name: body.vehicle_name,
-                        vehicle_owner_id: req.user._id,
+                        vehicle_owner_id: body.vehicle_owner_id,
                         vehicle_trailay_id: body.vehicle_trailay_id ,
                         vehicle_make: body.vehicle_make ,
                         vehicle_model: body.vehicle_model ,
