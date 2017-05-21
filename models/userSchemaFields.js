@@ -145,7 +145,7 @@ module.exports.userSchemaFields = {
     },
 
     parent_user: {
-        type: mongooseConn.Schema.Types.ObjectId,
+        type: String,
         required: false
     },
 
