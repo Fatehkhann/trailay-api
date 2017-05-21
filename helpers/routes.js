@@ -95,7 +95,7 @@ function getResponse(reqType, path, authenticate, routeObject) {
                     })
                     break;
                 case '/vehicles':
-                    vehicleSchema.find().then((vehicles) => {
+                    vehicleSchema.find(req.query).then((vehicles) => {
                         if(!vehicles) {
                             return res.status(404).send();
                         }
