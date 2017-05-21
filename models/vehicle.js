@@ -24,7 +24,7 @@ VehicleSchema.methods.toJSON = function() {
     var vehicle = this;
     var vehicleObject = vehicle.toObject();
 
-    return _.pick(vehicleObject, ['_id', 'vehicle_name', 'vehicle_make', 'status', 'freight_company_id']);
+    return _.pick(vehicleObject, ['_id', 'vehicle_model', 'licence_plate_no', 'vehicle_driver', 'vehicle_name', 'vehicle_make', 'status']);
 }
 
 // End of Instance Methods
