@@ -134,7 +134,7 @@ function getResponse(reqType, path, authenticate, routeObject) {
             switch (path) {
                 case '/signup/user':
                     var body = _.pick(req.body, ['firstName', 'lastName', 'email', 
-                    'password', 'phone', 'created_at', 
+                    'password', 'phone', 'created_at', 'user_type',
                     'updated_at', 'parent_user']);
                     var user = new userSchema({
                         firstName: body.firstName,
@@ -142,9 +142,10 @@ function getResponse(reqType, path, authenticate, routeObject) {
                         email: body.email,
                         password: body.password,
                         phone: body.phone,
+                        user_type: body.user_type,
+                        parent_user: body.parent_user,
                         created_at: Date(),
                         updated_at: Date(),
-                        parent_user: body.parent_user
                     });
                     user.save().then(() => {
                         return user.generateAuthToken();
