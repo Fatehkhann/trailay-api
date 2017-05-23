@@ -3,6 +3,7 @@ const _ = require('lodash');
 const { userSchema } = require('./../models/user.js');
 const { logSchema } = require('./../models/log.js');
 const { vehicleSchema } = require('./../models/vehicle');
+const { messageSchema } = require('./../models/message');
 const { ObjectID } = require('mongodb');
 
 //user's signup function
@@ -103,6 +104,17 @@ function getResponse(reqType, path, authenticate, routeObject) {
                         res.status(200).send({vehicles});
                     }, (err) => {
                         res.status(400).send('Error occured:' + err);
+                    })
+                    break;
+                case '/messages':
+                    messageSchema.find(req.query).then((messages) => {
+                        if(!messages) {
+                            return res.status(404).send();
+                        }
+                       // _.pick(vehicles.toObject(), ['_id', 'vehicle_model', 'licence_plate_no', 'vehicle_driver', 'vehicle_name', 'vehicle_make', 'status', 'pickup_capacity', 'engine_power']
+                        res.status(200).send({messages});
+                    }, (err) => {
+                        res.status(400).send('& an error occured:' + err);
                     })
                     break;
                 case '/vehicles/:id':
@@ -220,6 +232,20 @@ function getResponse(reqType, path, authenticate, routeObject) {
                     })
                     newVehicle.save().then((vehicle) => {
                         res.status(200).send(vehicle);
+                    }, (err) => {
+                        res.status(400).send('Saving Failed' + err);
+                    });
+                    break;
+                case '/addMessage':
+                    var newMessage = new messageSchema({
+                        message_sender: _.pick(req.body, ['message_sender']).message_sender,
+                        message_receiver: _.pick(req.body, ['message_receiver']).message_receiver,
+                        message_body: _.pick(req.body, ['message_body']).message_body,
+                        message_to: _.pick(req.body, ['message_to']).message_to,
+                        message_from: _.pick(req.body, ['message_from']).message_from
+                    })
+                    newMessage.save().then((message) => {
+                        res.status(200).send(message);
                     }, (err) => {
                         res.status(400).send('Saving Failed' + err);
                     });

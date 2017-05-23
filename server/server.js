@@ -39,6 +39,10 @@ app.post('/addVehicle', authenticate, (req, res) => {
     route.getResponse('post', '/addVehicle', authenticate, {req, res});
 });
 
+app.post('/addMessage', authenticate, (req, res) => {
+    route.getResponse('post', '/addMessage', authenticate, {req, res});
+});
+
 /////////////////////////GET
 app.get('/', authenticate, (req, res) => {
     route.getResponse('get', '/', authenticate, {req, res});
@@ -74,6 +78,10 @@ app.get('/logs/:id', authenticate, (req, res) => {
 
 app.get('/vehicles', authenticate, (req, res) => {
     route.getResponse('get', '/vehicles', authenticate, {req, res});
+});
+
+app.get('/messages', authenticate, (req, res) => {
+    route.getResponse('get', '/messages', authenticate, {req, res});
 });
 
 app.get('/vehicles/:id', authenticate, (req, res) => {
