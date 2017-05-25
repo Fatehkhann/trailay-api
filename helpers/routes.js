@@ -58,7 +58,10 @@ function getResponse(reqType, path, authenticate, routeObject) {
                         return res.status(404).send();
                     }
                     userSchema.findById(id).then((user) => {
-                        userSchema.find({ _id: { $in: user.fleet_managers } }).then((doc) => {
+                        userSchema.find({ 
+                            _id: { $in: user.fleet_managers }, 
+                            'user_type': 'Fleet Manager' 
+                        }).then((doc) => {
                             res.status(200).send(doc);
                         }, (err) => {
                             res.status(400).send('Error occured' + err);
